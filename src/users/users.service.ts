@@ -10,6 +10,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaLibSQL } from '@prisma/adapter-libsql';
 import { createClient } from '@libsql/client';
 import { envs } from 'src/config';
+import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class UsersService extends PrismaClient implements OnModuleInit {
@@ -31,25 +32,25 @@ export class UsersService extends PrismaClient implements OnModuleInit {
     this.logger.log('Connected to the database');
   }
 
+  getRandomBoolean() {
+    return Math.random() >= 0.5;
+  }
+
   async create(createUserDto: CreateUserDto) {
-    const { email, name, rfid } = createUserDto;
+    const { rfid } = createUserDto;
 
     try {
-      const user = await this.user.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (user) {
-        return 'User already exists';
-      }
+      const firstName = faker.person.firstName();
+      const lastName = faker.person.lastName();
+      const email = faker.internet.email({ firstName, lastName });
 
       const newUser = await this.user.create({
         data: {
+          name: `${firstName} ${lastName}`,
           email,
-          name,
           rfid,
+          available: this.getRandomBoolean(),
+          enteredDepartment: this.getRandomBoolean(),
         },
       });
 

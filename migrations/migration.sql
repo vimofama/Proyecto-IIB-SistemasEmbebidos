@@ -10,9 +10,3 @@ CREATE TABLE "User" (
     "updatedAt" DATETIME NOT NULL
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_rfid_key" ON "User"("rfid");
-
