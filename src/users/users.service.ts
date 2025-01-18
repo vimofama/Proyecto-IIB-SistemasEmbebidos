@@ -49,7 +49,6 @@ export class UsersService extends PrismaClient implements OnModuleInit {
           name: `${firstName} ${lastName}`,
           email,
           rfid,
-          available: this.getRandomBoolean(),
           enteredDepartment: this.getRandomBoolean(),
         },
       });
